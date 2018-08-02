@@ -28,3 +28,15 @@ spring:
 mybatis:
   type-aliases-package:
   mapper-locations: classpath:mybatis/*.xml
+
+job:
+  ip: 1270.0.01
+  port: 9001
+  appName: sell
+  appSecret: sakdjasdjkas
+  redirectUrl: www.baidu.com
+  magic:
+   intKey: 8888
+   longKey: 12.1
+   atcKey: 10
+   boolKey: true
