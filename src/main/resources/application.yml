@@ -1,0 +1,30 @@
+#logging:
+#  pattern:
+#    console: "%d - %msg%n"
+#  level: trace
+#  file: h://sell.log
+
+
+#jpa
+#  spring:
+#    datasource:
+#      driver-class-name: com.mysql.jdbc.Driver
+#      username: root
+#      password: Aa123654
+#      url: jdbc:mysql://localhost:3306/sell?characterEncoding=UTF-8&amp;useSSL=false
+#    jpa:
+#      show-sql: true
+
+
+#mybatis
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    username: root
+    password: Aa123654
+    url: jdbc:mysql://localhost:3306/sell?characterEncoding=utf-8&amp;useSSL=false
+    type: com.alibaba.druid.pool.DruidDataSource
+    initialize: true
+mybatis:
+  type-aliases-package:
+  mapper-locations: classpath:mybatis/*.xml
