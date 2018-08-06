@@ -3,7 +3,7 @@
         PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
         "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
 <generatorConfiguration>
-    <!-- 引入 application.properties -->
+    <!-- 引入 generator.properties -->
     <properties resource="generator.properties" />
 
     <classPathEntry location="${jdbc.driver.localtion}"/>

@@ -6,7 +6,10 @@
 	<groupId>com.djcao</groupId>
 	<artifactId>sell</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>jar</packaging>
+	<modules>
+		<module>web</module>
+	</modules>
+	<packaging>pom</packaging>
 
 	<name>sell</name>
 	<description>Demo project for Spring Boot</description>
@@ -120,7 +123,7 @@
 				<configuration>
 					<verbose>true</verbose>
 					<overwrite>true</overwrite>
-					<configurationFile>${basedir}/src/main/resources/generatorConfig.xml</configurationFile>
+					<configurationFile>web/src/main/resources/generatorConfig.xml</configurationFile>
 				</configuration>
 			</plugin>
 		</plugins>
