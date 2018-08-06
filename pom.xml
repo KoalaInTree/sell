@@ -8,6 +8,8 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<modules>
 		<module>web</module>
+		<module>biz</module>
+		<module>dao</module>
 	</modules>
 	<packaging>pom</packaging>
 

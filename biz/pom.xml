@@ -9,12 +9,12 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>web</artifactId>
+    <artifactId>biz</artifactId>
 
     <dependencies>
         <dependency>
             <groupId>com.djcao</groupId>
-            <artifactId>biz</artifactId>
+            <artifactId>dao</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
     </dependencies>
