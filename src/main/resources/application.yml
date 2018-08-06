@@ -16,18 +16,23 @@
 #      show-sql: true
 
 
+
 #mybatis
-spring:
-  datasource:
-    driver-class-name: com.mysql.jdbc.Driver
-    username: root
-    password: Aa123654
-    url: jdbc:mysql://localhost:3306/sell?characterEncoding=utf-8&amp;useSSL=false
-    type: com.alibaba.druid.pool.DruidDataSource
-    initialize: true
-mybatis:
-  type-aliases-package:
-  mapper-locations: classpath:mybatis/*.xml
+#spring:
+#  datasource:
+#    driver-class-name: com.mysql.jdbc.Driver
+#    username: root
+#    password: Aa123654
+#    url: jdbc:mysql://localhost:3306/sell?characterEncoding=utf-8&amp;useSSL=false
+#    type: com.alibaba.druid.pool.DruidDataSource
+#    initialize: true
+#mybatis:
+#  type-aliases-package:
+#  mapper-locations: classpath:mybatis/*.xml
+
+
+
+#mybatis多数据源配置
 
 job:
   ip: 1270.0.01
@@ -40,3 +45,26 @@ job:
    longKey: 12.1
    atcKey: 10
    boolKey: true
+spring:
+  datasource:
+    sell:
+      driver-class-name: com.mysql.jdbc.Driver
+      username: root
+      password: Aa123654
+      url: jdbc:mysql://localhost:3306/sell?characterEncoding=UTF-8&amp;useSSL=false
+      type: com.alibaba.druid.pool.DruidDataSource
+    mall:
+      driver-class-name: com.mysql.jdbc.Driver
+      username: root
+      password: Aa123654
+      url: jdbc:mysql://localhost:3306/mmall?characterEncoding=UTF-8&amp;useSSL=false
+      type: com.alibaba.druid.pool.DruidDataSource
+  freemarker:
+    allow-request-override: false
+    cache: true
+    charset: UTF-8
+    check-template-location: true
+    content-type: text/html
+    expose-request-attributes: false
+    expose-session-attributes: false
+    expose-spring-macro-helpers: false

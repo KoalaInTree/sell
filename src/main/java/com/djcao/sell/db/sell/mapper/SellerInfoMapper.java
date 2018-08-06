@@ -1,6 +1,6 @@
-package com.djcao.sell.mapper;
+package com.djcao.sell.db.sell.mapper;
 
-import com.djcao.sell.domain.SellerInfo;
+import com.djcao.sell.db.sell.domain.SellerInfo;
 import java.util.List;
 
 public interface SellerInfoMapper {

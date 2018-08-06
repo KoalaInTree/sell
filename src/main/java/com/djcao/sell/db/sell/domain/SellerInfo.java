@@ -1,4 +1,4 @@
-package com.djcao.sell.domain;
+package com.djcao.sell.db.sell.domain;
 
 import java.util.Date;
 

@@ -1,7 +1,7 @@
 package com.djcao.sell;
 
-import com.djcao.sell.domain.SellerInfo;
-import com.djcao.sell.mapper.SellerInfoMapper;
+import com.djcao.sell.db.sell.domain.SellerInfo;
+import com.djcao.sell.db.sell.mapper.SellerInfoMapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

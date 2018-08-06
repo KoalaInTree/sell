@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.djcao.sell.mapper.SellerInfoMapper" >
-  <resultMap id="BaseResultMap" type="com.djcao.sell.domain.SellerInfo" >
+<mapper namespace="com.djcao.sell.db.sell.mapper.SellerInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.djcao.sell.db.sell.domain.SellerInfo" >
     <id column="id" property="id" jdbcType="VARCHAR" />
     <result column="username" property="username" jdbcType="VARCHAR" />
     <result column="password" property="password" jdbcType="VARCHAR" />
@@ -13,7 +13,7 @@
     delete from seller_info
     where id = #{id,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="com.djcao.sell.domain.SellerInfo" >
+  <insert id="insert" parameterType="com.djcao.sell.db.sell.domain.SellerInfo" >
     <selectKey resultType="java.lang.String" keyProperty="id" order="BEFORE" >
       SELECT LAST_INSERT_ID()
     </selectKey>
@@ -24,7 +24,7 @@
       #{openid,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
       )
   </insert>
-  <update id="updateByPrimaryKey" parameterType="com.djcao.sell.domain.SellerInfo" >
+  <update id="updateByPrimaryKey" parameterType="com.djcao.sell.db.sell.domain.SellerInfo" >
     update seller_info
     set username = #{username,jdbcType=VARCHAR},
       password = #{password,jdbcType=VARCHAR},
