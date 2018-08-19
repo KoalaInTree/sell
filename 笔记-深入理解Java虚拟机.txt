@@ -1,4 +1,4 @@
-﻿一、java虚拟机的参数设汇总
+一、java虚拟机的参数设汇总
 1.java堆的最大值 -Xmx
 2.java堆的最小值 -Xms
 3.在堆内存溢出时内存堆转储快照，用于分析：-XX:+HeapDumpOnOutOfMemoryError
@@ -163,17 +163,132 @@
 					1.并发清理阶段，用户还在产生垃圾，这部分垃圾需要等到下一次gc才能清理，成为浮动垃圾。
 					2.因为是并发清理，所有需要预留空间给新的垃圾，默认为老年代内存的68%。可以设置-XX:CMSInitiatingOccupancyFraction来提供触发百分比。当运行期间出	现预留内存不足时会出现concurrent modl failure导致再一次Full Gc。采用后备方案Serial Old重新收集老年代内存。大大增加gc时间
 					3.采用标记-清除算法，导致出现较多内存碎片，没有足够的连续空间分配给对象，可以采用-XX:+UseCMSCompactAtFullCollection开关参数，来进行一次碎片整理过程（此过程不能并发，需要停止用户线程），可以采用-XX:+CMSFullGCBeforeCompaction，进过多少次不压缩的full gc后来一次压缩的
-			7.G1收集器
-				1.jdk-u4后推出商用
-				2.缩短用户线程的停顿时间，并发运行
-				3.分代收集，收集范围包括新生代和老年代
-					1.独立管理整个GC堆（新生代和老年代），不需要搭配使用，采用不同的方式处理不同代的对象
-					2.保留分代概念，但是内存布局有很大差别，将整个堆划分为多个大小相等的独立区域（Region）。新生代和老年代不是		物理隔离
-				4.整体采用标记-整理算法。局部（两个Region间）基于复制算法，不会产生内存碎片
-				5.低停顿的实现高吞吐量-在明确指定M毫秒时间片内，垃圾收集消耗的时间不超过N毫秒
-				6.用于替换CMS
-				7.运行过程分为：初始标记，并发标记，重新标记，筛选收回
-					1.回收阶段采用复制算法，排序region的回收价值和成本（垃圾大小和预计时间）
-					2.根据用户期望的GC停顿时间来制定回收计划，回收价值高的region，因为region内存较小，所有时间可控
-					3.复制算法是从一个或多个region复制存活对象到堆上另一个空的region
-				8.如何判定对象存活，因为存在不同区域对象之间的引用
+		7.G1收集器
+			1.jdk-u4后推出商用
+			2.缩短用户线程的停顿时间，并发运行
+			3.分代收集，收集范围包括新生代和老年代
+				1.独立管理整个GC堆（新生代和老年代），不需要搭配使用，采用不同的方式处理不同代的对象
+				2.保留分代概念，但是内存布局有很大差别，将整个堆划分为多个大小相等的独立区域（Region）。新生代和老年代不是		物理隔离
+			4.整体采用标记-整理算法。局部（两个Region间）基于复制算法，不会产生内存碎片
+			5.低停顿的实现高吞吐量-在明确指定M毫秒时间片内，垃圾收集消耗的时间不超过N毫秒
+			6.用于替换CMS
+			7.运行过程分为：初始标记，并发标记，重新标记，筛选收回
+				1.回收阶段采用复制算法，排序region的回收价值和成本（垃圾大小和预计时间）
+				2.根据用户期望的GC停顿时间来制定回收计划，回收价值高的region，因为region内存较小，所有时间可控
+				3.复制算法是从一个或多个region复制存活对象到堆上另一个空的region
+			8.如何判定对象存活，因为存在不同区域(region之间或者新生代和老生代之间)对象之间的引用.
+				1.reference类型在对一个对象进行写操作时，会判断是否在同一区域，如果不在同一区域，利用caredtable在所引用对象的区域的remembered set记录引用信息。当内存回收时，在GC根节点的枚举范围中添加Remembered set保证不全堆扫描又不遗漏
+	5.内存分配和回收策略
+		5.1主要解决问题：给对象分配内存和回收分配给对象的内存
+			1.对象优先在Eden分配
+			2.大对象（需要大量连续内存空间的java对象byte[]）直接进入老年代，-XX:PretenureSizeThreshold可以让大于此值的对象直接分配到老年代（Parallel Scavenge不支持）
+			3.长期存活的对象将进入老年代：每个对象有一个对象年龄计数器，经历一次minor GC 任然存活在survivor空间的对象年龄增加1，默认15岁晋升至老年代（-XX:MaxTenuringThreshold设置年龄阀值）
+			4.动态对象年龄判定:如果survivor空间中相同年龄所以对象大小的总和大于survivor空间的一半，年龄大于等于的对象就可以直接进入老年代，无须导致阀值
+			5.minor GC时如果出现survivor空间无法满足复制算法需要保存的对象，根据担保策略这些对象保存到老年代，但是不知道老年代是否有足够空间啊（这些对象有多少需要在完成gc才知道），只能取之前每次晋升到老年代对象容量的平均值，与老年代的剩余空间比较来决定是否full gc。如果担保失败（此次的对象容量远大于平均值），出现 HandlePromotionFailure，重新发起full gc。
+三、实践
+	1.虚拟机性能监控与故障排查
+		1.1jvm命令
+			1.jps虚拟机进程状况工具：列出正在运行的虚拟机进程，显示虚拟机执行主类的名称，以及这些进程的本地虚拟机的唯一id
+			2.jstat虚拟机统计信息监视工具：监视虚拟机各种运行状态信息。显示本地或者远程虚拟机进程中的类装载。内存。垃圾手机、jit编译等运行数据
+			3.jinfo是java配置信息工具：实时地查看和调整虚拟机的各项参数
+			4.jmap是java内存映像工具：用于生成堆转储快照（heapdunp或者dump文件），还能查询finalize执行队列，java堆和永久代的详细信息，如空间使用率，何种收集器
+			5.jhat虚拟机堆转储快照分析工具（一般用其他工具代替）
+			6.jstack是java堆栈跟踪工具：生成虚拟机当前时刻的线程快照，线程快照就是当前虚拟机内每一条线程正在执行的方法堆栈的集合。定位线程长时间停顿的原因
+四、类文件结构
+	1.代码编译的结果从本地机器码转变为字节。是关键
+	2.（平台）无关性基石：java编译器把java代码编译成字节码存储与class文件，虚拟机执行字节码，其他语言（scala）编译成字节码存储于class，虚拟机也能执行
+ *3.Class文件是一组以8位字节为基础单位的二进制流，各个数据项目严格按照顺序紧凑地排列在Class文件之中，中间没有添加任何分隔符，使得整个Class文件中存储的内容几乎全部都是程序运行的必要数据，没有空隙存在。当遇到需要占用8位字节以上空间的数据项时，则会按照高位在前的方式分割成若干个8位字节进行存储
+ 4.class有两种数据类型：无符号数和表
+ 	1.无符号数属于基本的数据类型，u1、u2、u4、u8，分别代表1个字节、2个字节、4个字节、8个字节的无符号数。无符号数可以用来描述数字、索引引用、数量值，或者安装UTF-8编码的字符串值
+ 	2.表是由多个无符号数或其他表作为数据项构成的复合数据类型，所以表习惯用'_info'结尾。Class文件本质上就是一张表
+ 	3.class文件格式
+ 		1.文件格式表
+	 		类型 						名称 								数量
+	 		u4 							magic 							1
+	 		u2 							minor_version				1
+	 		u2 							major_version				1
+	 		u2							constant_pool_count 1
+	 		cp_info 				constant_pool  			constant_pool_count-1
+	 		u2							access_flags				1
+	 		u2							this_class					1
+	 		u2							super_class					1
+	 		u2							interfaces_count		1
+	 		u2							interfaces          interfaces_count
+	 		u2							fields_count				1
+	 		field_info			fields              fields_count
+	 		u2							methods_count				1
+	 		method_info			methods             methods_count
+	 		u2							attributes_count		1
+	 		attribute_info  attributes          attributes_count
+ 		2.magic与Class文件的版本：唯一作用是用于确定这个文件是否为一个能被虚拟机接受的class文件
+ 		3.minor_version表示java次版本号
+ 		4.major_version表示java主版本号,jdk1是45开始，jdk加1，主版本号加一。jdk1.8为[52,53)
+ 		5.常量池:是class文件结构中与其他项目关联最多的数据类型，也是占用class文件空间最大的数据项目之一，第一个出现的表	类型数据项目
+ 				1.constant_pool_count表示常量池容量计数值，这个计数值是从1开始。如果16进制数0x0016表示常量池有21项常量，索引值为1~21，第0项有特殊用途，某些指向常量池	的索引值的数据在特定情况下需要表达‘不引用任务一个常量池项目’的意思。这种情况就可以把索引值置为0。calss文件结构中唯一不是从0开始计数的。
+ 				2.常量池主要存放两大类常量：字面量（Literal）和符合引用（Symbolic References）；
+ 					1.字面量：文本字符串、被声明为final的常量值等
+ 					2.符合引用：属于编译原理的概念。包括三类常量：1类和接口的全限定名2字段的名称和描述符3方法的名字和描述符
+ 						这些符号引用是静态常量池，会在类加载的时候，进行动态连接，保存于运行时常量池（位于方法区，别名永久代）
+ 					3.常量池有11种不同数据结构的表
+ 						类型              									标志			描述
+ 						CONSTANT_Utf8_info								1				UTF-8编码的字符串
+ 						CONSTANT_Interger_info						3				整型字面量
+ 						CONSTANT_Float_info								4				浮点型字面量
+ 						CONSTANT_Long_info								5				长整型字面量
+ 						CONSTANT_Double_info							6				双精度浮点字面量
+ 						CONSTANT_Class_info								7				类或接口的符合引用
+ 						CONSTANT_String_info							8				字符串类型字面量
+ 						CONSTANT_Fieldref_info						9				字段的符合引用
+ 						CONSTANT_Methodref_info						10			类中方法的符合引用
+ 						CONSTANT_InterfaceMethodref_info  11			接口中方法的符合引用
+ 						CONSTANT_NameAndType_info					12			字段或方法的部分符合引用
+ 						例子
+		 						CA FE BA BE 00 00 00 32 00 16 07 00 02 01 00 1D
+		 						前四位 确定class确定文件合法性。
+		 						二位   次版本
+		 						二位   主版本
+		 						二位   常量个数
+		 		3.访问标志
+		 			1.用两个字节代表访问标志：具体标志位含义见pdf168页
+		 		4.类索引（this_class）和父类索引(super_class)是u2类型的数据结构，指向CONSTANT_Class_info的类描述符常量
+		 		5.interfaces_count，实现接口的个数值。如果没有实现接口，该值为0，则interfacces不占用字节
+		 		6.interfaces，一组u2类型的数据结构的数组
+		 		7.字段表集合：不会列出从超类或父接口继承的字段，但可能列出本来不存在的字段，如内部类指向外部实例的字段。
+		 			1.字段表用于描述接口或类中声明的变量。字段包括了类级变量或实例级变量，但不包括方法内部声明的变量
+		 			2.结构
+		 				类型  						 名称								数量
+		 				u2							 access_flags				1
+		 				u2							 name_index					1
+		 				u2							 descriptor_index		1
+		 				u2							 attributes_count		1
+		 				attribute_info   attributes 				attributes_count
+		 			3.access_flage是对子类修饰符的标志（字段作用域、类级/	实例级、可变性、并发可见性、可否序列化）
+		 			4.name_index 字段的简单名称 private static final String boo = "foo"; 简单名称是boo
+		 			5.descriptor_index 字段的描述符
+		 				1.全限名称：比如Object就是"java/lang/Object;"
+		 				2.字段描述符的定义：字段类型为基本类型时用一个表示基本类型的字母（基本类型首字母大写，boolean类型为Z），当是对象类型时，用L+类的全限名称,当时数组类型时，一个纬度加一个[，比如int[] bar，则引用[I表示描述符
+		 				3.方法的描述符：返回值用V来表示。格式严格定义:先参数列表后返回值，参数列表放在()中，比如toString()方法
+		 					()Ljava/lang/String,比如int indexOf(char[] source,int sourceOffset,intsourceCount,char[] target,int targetOffset,int targetCount,int fromIndex)的描述符为([CII[CIII)I
+		 		8.方法表集合
+		 			1.结构与字段表相同
+		 			2.不常见的方法修饰符：strictfp,可以修饰接口、类、类中的非构造函数方法。被修饰时表示作用域内的单精度和双精度都严格按照FP-strict（精确浮动）,如果没有修饰的方法进行浮动运算往往无法得到预期的结果
+		 			3.方法内的代码经过编译器编译成字节码指令后，存放在方法属性表集合中一个名为“Code”的属性，属性表是Class文件格式最具扩展性的数据项目
+		 			4.如果子类没有重写父类的方法，方发表不会出现父类的方法信息。但是同样的，有可能出现编译器自动添加的方法，最典型的便是类构造器“<clinit>”方法和实例构造器"<init>"方法
+		 			5.class文件中对重载方法的特征签名范围更大，只有描述符不完全一致的两个方法可以同时存在。java语言特征签名不包括返回值
+		 		9.属性表集合
+		 			1.不是严格要求具有顺序，只有不与已有属性名重复。任何编译器都可以向属性表写入自己的属性信息，但是虚拟机运行时会忽略不认识的属性。预定义了9项虚拟机能识别的属性（随着jdk版本的升级后续会增加属性）
+		 				属性名称								使用位置 					含义
+		 				Code 									方法表 						java代码编译成的字节码指令
+		 				ConstantValue 				字段表 						final关键字定义的常量值
+		 				Deprecated 						类、方发表、字段表   被声明为deprecated的方法和字段
+		 				Execptions 						方法表 						方法抛出的异常
+		 				InnerClasses 					类文件							内部类列表
+		 				LineNumberTable 			Code属性 					java源码的行号与字节码指令的对应关系
+		 				LocalVariableTable 		Code属性 					方法的局部变量描述
+		 				SourceFile 						类文件 						源文件名称
+		 				Synthetic 						类、方法表、字段表 	标识方法或字段为编译器自动生成的
+		 			2.code属性不一定在方法表出现，比如接口的方法不需要实现所以没有。
+		 				code属性包括操作数栈深度的最大值，虚拟机根据该值分配栈帧的操作栈深度。局部变量表所需的存储空间，字节码长度，字节码指令超过65535条会拒绝编译
+		 				每个实例方法都会传入this关键字，来指向该方法的对象。静态方法不传入
+
+
