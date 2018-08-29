@@ -1,4 +1,4 @@
-package com.djcao.sell.proxy;
+package com.djcao.sell.proxy.jdkproxy;
 
 /**
  * @author djcao
