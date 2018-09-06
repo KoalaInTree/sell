@@ -68,3 +68,16 @@ spring:
     expose-request-attributes: false
     expose-session-attributes: false
     expose-spring-macro-helpers: false
+rocketmq:
+  producer:
+    groupName: sell
+    namesrvAddr: 192.168.31.129:9876
+    sendMsgTimeout: 3000
+    maxMessageSize: 40960
+  consumer:
+    groupName: sell
+    namesrvAddr: 192.168.31.129:9876
+    topic: demoTopic
+    tag: demoTag
+    consumeThreadMax: 10
+    consumeThreadMin: 2
