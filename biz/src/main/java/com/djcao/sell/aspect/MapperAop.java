@@ -18,7 +18,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class MapperAop {
 
-    @Pointcut(value = "execution(* com.djcao.sell.db.mall.mapper.*.*(..))")
+    @Pointcut(value = "execution(* com.djcao.sell.db..*.*(..))")
     public void pointcut(){}
 
     @Before(value = "pointcut()")
