@@ -2,6 +2,7 @@ package com.djcao.sell.design.SimpleFactory;
 
 import java.util.Scanner;
 
+
 /**
  * @author djcao
  * @workcode wb-cdj390654

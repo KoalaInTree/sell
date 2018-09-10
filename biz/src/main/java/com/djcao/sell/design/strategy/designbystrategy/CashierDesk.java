@@ -2,9 +2,7 @@ package com.djcao.sell.design.strategy.designbystrategy;
 
 import java.util.Scanner;
 
-import com.djcao.sell.design.strategy.CashSuper;
 import com.djcao.sell.design.strategy.ReceiverStrategyEnum;
-import com.djcao.sell.design.strategy.designbyfactory.CashReceiverFactory;
 
 import static com.djcao.sell.design.strategy.ReceiverStrategyEnum.DISCOUNT;
 import static com.djcao.sell.design.strategy.ReceiverStrategyEnum.MONEYRETUREN;

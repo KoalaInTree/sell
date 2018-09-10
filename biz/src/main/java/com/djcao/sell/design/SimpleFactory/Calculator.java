@@ -1,4 +1,4 @@
-package com.djcao.sell.design.SimpleFactory;
+package com.djcao.sell.designpattern.SimpleFactory;
 
 import java.util.Scanner;
 import java.util.regex.Matcher;

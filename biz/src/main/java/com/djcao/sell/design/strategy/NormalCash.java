@@ -5,7 +5,7 @@ package com.djcao.sell.design.strategy;
  * @workcode wb-cdj390654
  * @date 2018-09-07
  */
-public class NormalCash extends CashSuper {
+public class NormalCash extends CashSuper  {
     @Override
     public Double getResult() {
         return price*number;
