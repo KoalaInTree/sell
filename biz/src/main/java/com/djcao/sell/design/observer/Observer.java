@@ -6,5 +6,5 @@ package com.djcao.sell.design.observer;
  * @date 2018/9/10
  */
 public interface Observer {
-    void onMessage();
+    void onMessage(String status);
 }
