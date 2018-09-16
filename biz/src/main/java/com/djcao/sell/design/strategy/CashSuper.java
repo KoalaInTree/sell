@@ -11,5 +11,4 @@ public abstract class CashSuper {
     public Double price;
     public Double number;
     public abstract Double getResult();
-
 }
