@@ -1,7 +1,13 @@
 package com.djcao.sell.vo;
 
+import java.util.Date;
+import java.util.TimeZone;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
 
 /**
  * @author djcao
@@ -17,6 +23,14 @@ public class WordsOfWelcomeVO {
     @JsonProperty("CODE")
     private int code;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date startTime;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date endTime;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT+8:00")
+    private Date showTime;
     public String getWords() {
         return words;
     }
@@ -31,5 +45,8 @@ public class WordsOfWelcomeVO {
 
     public void setCode(int code) {
         this.code = code;
+    }
+
+    public static void main(String[] args) {
     }
 }
