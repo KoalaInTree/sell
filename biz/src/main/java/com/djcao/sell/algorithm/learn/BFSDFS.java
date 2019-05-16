@@ -1,4 +1,4 @@
-package com.djcao.sell.algorithm;
+package com.djcao.sell.algorithm.learn;
 
 import java.util.Arrays;
 import java.util.List;

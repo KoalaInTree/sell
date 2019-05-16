@@ -35,7 +35,7 @@
 #mybatis多数据源配置
 
 job:
-  ip: 1270.0.01
+  ip: 127.0.0.1
   port: 9001
   appName: sell
   appSecret: sakdjasdjkas
@@ -47,17 +47,23 @@ job:
    boolKey: true
 spring:
   datasource:
-    sell:
+#    sell:
+#      driver-class-name: com.mysql.jdbc.Driver
+#      username: root
+#      password: Aa123654
+#      url: jdbc:mysql://localhost:3306/sell?characterEncoding=UTF-8&amp;useSSL=false
+#      type: com.alibaba.druid.pool.DruidDataSource
+#    mall:
+#      driver-class-name: com.mysql.jdbc.Driver
+#      username: root
+#      password: Aa123654
+#      url: jdbc:mysql://localhost:3306/mmall?characterEncoding=UTF-8&amp;useSSL=false
+#      type: com.alibaba.druid.pool.DruidDataSource
+    flybird:
       driver-class-name: com.mysql.jdbc.Driver
       username: root
-      password: Aa123654
-      url: jdbc:mysql://localhost:3306/sell?characterEncoding=UTF-8&amp;useSSL=false
-      type: com.alibaba.druid.pool.DruidDataSource
-    mall:
-      driver-class-name: com.mysql.jdbc.Driver
-      username: root
-      password: Aa123654
-      url: jdbc:mysql://localhost:3306/mmall?characterEncoding=UTF-8&amp;useSSL=false
+      password: 123456
+      url: jdbc:mysql://192.168.79.131:3306/flybird?characterEncoding=UTF-8&amp;useSSL=false
       type: com.alibaba.druid.pool.DruidDataSource
   freemarker:
     allow-request-override: false
@@ -68,15 +74,24 @@ spring:
     expose-request-attributes: false
     expose-session-attributes: false
     expose-spring-macro-helpers: false
+  rabbitmq:
+    host: 192.168.79.136
+    port: 5672
+    username: guest
+    password: guest
+    connection-timeout: 15000
+    listener:
+      acknowledge-mode: manual
+      prefetch: 10
 rocketmq:
   producer:
     groupName: sell
-    namesrvAddr: 192.168.31.129:9876
+    namesrvAddr: 192.168.79.137:9876
     sendMsgTimeout: 3000
     maxMessageSize: 40960
   consumer:
     groupName: sell
-    namesrvAddr: 192.168.31.129:9876
+    namesrvAddr: 192.168.79.137:9876
     topic: demoTopic
     tag: demoTag
     consumeThreadMax: 10

@@ -39,13 +39,13 @@
                         password="${jdbc.password}">
         </jdbcConnection>
 
-        <javaModelGenerator targetPackage="com.djcao.sell.domain"
+        <javaModelGenerator targetPackage="com.djcao.sell.db.flybird.domain"
                             targetProject="src/main/java" />
 
         <sqlMapGenerator targetPackage="mybatis/"
-                         targetProject="src/main/resources" />
+                         targetProject="src/main/resources/flybird" />
 
-        <javaClientGenerator targetPackage="com.djcao.sell.mapper"
+        <javaClientGenerator targetPackage="com.djcao.sell.db.flybird.mapper"
                              targetProject="src/main/java" type="XMLMAPPER" />
 
         <!-- Mysql 配置 -->
@@ -61,7 +61,13 @@
             <!--&lt;!&ndash;<generatedKey column="id" sqlStatement="select SEQ_{1}.nextval from dual" identity="false" type="pre"/>&ndash;&gt;-->
         <!--</table>-->
 
-        <table tableName="seller_info"
+        <table tableName="comments"
+               enableCountByExample="true" enableUpdateByExample="true"
+               enableDeleteByExample="true" enableSelectByExample="true"
+               selectByExampleQueryId="true">
+            <generatedKey column="id" sqlStatement="Mysql" />
+        </table>
+        <table tableName="movie"
                enableCountByExample="true" enableUpdateByExample="true"
                enableDeleteByExample="true" enableSelectByExample="true"
                selectByExampleQueryId="true">

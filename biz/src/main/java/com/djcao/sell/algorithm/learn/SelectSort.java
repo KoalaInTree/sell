@@ -1,4 +1,4 @@
-package com.djcao.sell.algorithm;
+package com.djcao.sell.algorithm.learn;
 
 import java.util.Objects;
 import java.util.stream.Stream;
@@ -15,7 +15,7 @@ import java.util.stream.Stream;
 public class SelectSort extends AbstractSort{
 
     @Override
-    protected void sort() {
+    public void sort() {
         Objects.requireNonNull(values);
         for (int i=0;i<values.length;i++){
             int min = i;

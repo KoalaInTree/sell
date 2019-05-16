@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -55,6 +56,13 @@ public class SayHiController {
 
     @RequestMapping("test")
     public WordsOfWelcomeVO test(@RequestBody WordsOfWelcomeVO wordsOfWelcomeVO){
+        return wordsOfWelcomeVO;
+    }
+
+    @RequestMapping("get/price")
+    public @ResponseBody WordsOfWelcomeVO getPrice(){
+        WordsOfWelcomeVO wordsOfWelcomeVO = new WordsOfWelcomeVO();
+        wordsOfWelcomeVO.setPrice(123.12);
         return wordsOfWelcomeVO;
     }
 }

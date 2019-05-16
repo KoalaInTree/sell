@@ -1,12 +1,9 @@
 package com.djcao.sell;
 
-import com.alibaba.rocketmq.client.exception.MQBrokerException;
-import com.alibaba.rocketmq.client.exception.MQClientException;
-import com.alibaba.rocketmq.client.producer.DefaultMQProducer;
-import com.alibaba.rocketmq.client.producer.SendResult;
-import com.alibaba.rocketmq.common.message.Message;
-import com.alibaba.rocketmq.remoting.exception.RemotingException;
 
+import org.apache.rocketmq.client.producer.DefaultMQProducer;
+import org.apache.rocketmq.client.producer.SendResult;
+import org.apache.rocketmq.common.message.Message;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,11 +28,15 @@ public class TestMQ {
     @Autowired
     private DefaultMQProducer producer;
 
+    @Autowired(required = false)
+    private OrderSender orderSender;
+    @Autowired
+    private OrderReceive orderReceive;
+
     @Test
     public void testSycSendMessage(){
         Message message = new Message();
         message.setTopic(topic);
-        message.setTags(tag);
         message.setBody("hello,rocketmq".getBytes());
         try {
             SendResult send = producer.send(message);
@@ -45,5 +46,19 @@ public class TestMQ {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Test
+    public void testSend(){
+        orderSender.sendOrder("1");
+    }
+
+    @Test
+    public void testReceive(){
+        orderReceive.receive();
+    }
+
+    @Test
+    public void testOnMessage(){
     }
 }

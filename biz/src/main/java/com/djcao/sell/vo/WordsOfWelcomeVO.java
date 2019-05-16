@@ -1,13 +1,13 @@
 package com.djcao.sell.vo;
 
 import java.util.Date;
-import java.util.TimeZone;
 
+import com.djcao.sell.help.CustomDoubleSerialize;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.format.annotation.DateTimeFormat.ISO;
 
 /**
  * @author djcao
@@ -31,6 +31,8 @@ public class WordsOfWelcomeVO {
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT+8:00")
     private Date showTime;
+
+    private double price;
     public String getWords() {
         return words;
     }
@@ -46,7 +48,12 @@ public class WordsOfWelcomeVO {
     public void setCode(int code) {
         this.code = code;
     }
+    @JsonSerialize(using = CustomDoubleSerialize.class)
+    public double getPrice() {
+        return price;
+    }
 
-    public static void main(String[] args) {
+    public void setPrice(double price) {
+        this.price = price;
     }
 }
