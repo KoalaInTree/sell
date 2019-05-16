@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:aop="http://www.springframework.org/schema/aop"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xsi:schemaLocation="
+		http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/aop
+		http://www.springframework.org/schema/aop/spring-aop.xsd
+	   "
+	   default-lazy-init="false">
+
+	<description>公共配置</description>
+
+	<aop:aspectj-autoproxy expose-proxy="true" proxy-target-class="true" />
+	<bean class="com.djcao.sell.spring.applicationcontext.AspectjTest" />
+	<bean id="user1" class="com.djcao.sell.spring.beanfactory.User" abstract="false" init-method="init" destroy-method="destroy2">
+
+		<property name="age" value="11" >
+		</property>
+		<property name="name" value="dj" />
+		<property name="password" value="123" />
+
+	</bean>
+	<bean id="person" class="com.djcao.sell.spring.beanfactory.Person" />
+
+	<!--<bean id="user2" class="com.djcao.sell.spring.beanfactory.User">
+		<property name="age" value="11" />
+		<property name="name" value="dj" />
+		<property name="password" value="123" />
+		<property name="other" ref="user3" />
+	</bean>
+
+	<bean id="user3" class="com.djcao.sell.spring.beanfactory.User">
+		<property name="age" value="11" />
+		<property name="name" value="dj" />
+		<property name="password" value="123" />
+		<property name="other" ref="user1" />
+	</bean>-->
+
+	<alias name="user1" alias="dad" />
+	<bean id="myBeanPostProcessor" class="com.djcao.sell.spring.applicationcontext.MyBeanPostProcessor" />
+	<bean id="myInstantiationProcessor" class="com.djcao.sell.spring.applicationcontext.MyInstantiationProcessor" />
+</beans>
