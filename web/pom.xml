@@ -22,6 +22,24 @@
             <artifactId>biz</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
+        <!-- Exposition spring_boot -->
+        <dependency>
+            <groupId>io.prometheus</groupId>
+            <artifactId>simpleclient_spring_boot</artifactId>
+            <version>0.1.0</version>
+        </dependency>
+        <!-- Hotspot JVM metrics -->
+        <dependency>
+            <groupId>io.prometheus</groupId>
+            <artifactId>simpleclient_hotspot</artifactId>
+            <version>0.1.0</version>
+        </dependency>
+        <!-- Exposition servlet -->
+        <dependency>
+            <groupId>io.prometheus</groupId>
+            <artifactId>simpleclient_servlet</artifactId>
+            <version>0.1.0</version>
+        </dependency>
     </dependencies>
 
 </project>

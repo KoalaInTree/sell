@@ -23,7 +23,7 @@ public class ProducerBuilder {
     private int sendMsgTimeout;
     private int maxMessageSize;
 
-    @Bean
+    /*@Bean
     public DefaultMQProducer init() throws MQClientException {
         DefaultMQProducer producer = new DefaultMQProducer(groupName);
         producer.setNamesrvAddr(namesrvAddr);
@@ -31,5 +31,5 @@ public class ProducerBuilder {
         producer.setMaxMessageSize(maxMessageSize);
         producer.start();
         return producer;
-    }
+    }*/
 }

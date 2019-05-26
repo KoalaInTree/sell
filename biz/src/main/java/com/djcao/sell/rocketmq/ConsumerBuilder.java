@@ -32,7 +32,7 @@ public class ConsumerBuilder {
     private int consumeThreadMax;
     private int consumeThreadMin;
 
-    @Bean
+    /*@Bean
     public DefaultMQPushConsumer init() throws MQClientException {
         DefaultMQPushConsumer consumer = new DefaultMQPushConsumer(groupName);
         consumer.setConsumeThreadMax(consumeThreadMax);
@@ -54,5 +54,5 @@ public class ConsumerBuilder {
 
         consumer.start();
         return consumer;
-    }
+    }*/
 }

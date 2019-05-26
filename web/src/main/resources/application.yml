@@ -46,19 +46,19 @@ job:
    atcKey: 10
    boolKey: true
 spring:
-  datasource:
-    sell:
-      driver-class-name: com.mysql.jdbc.Driver
-      username: root
-      password: Aa123654
-      url: jdbc:mysql://localhost:3306/sell?characterEncoding=UTF-8&amp;useSSL=false
-      type: com.alibaba.druid.pool.DruidDataSource
-    mall:
-      driver-class-name: com.mysql.jdbc.Driver
-      username: root
-      password: Aa123654
-      url: jdbc:mysql://localhost:3306/mmall?characterEncoding=UTF-8&amp;useSSL=false
-      type: com.alibaba.druid.pool.DruidDataSource
+#  datasource:
+#    sell:
+#      driver-class-name: com.mysql.jdbc.Driver
+#      username: root
+#      password: Aa123654
+#      url: jdbc:mysql://localhost:3306/sell?characterEncoding=UTF-8&amp;useSSL=false
+#      type: com.alibaba.druid.pool.DruidDataSource
+#    mall:
+#      driver-class-name: com.mysql.jdbc.Driver
+#      username: root
+#      password: Aa123654
+#      url: jdbc:mysql://localhost:3306/mmall?characterEncoding=UTF-8&amp;useSSL=false
+#      type: com.alibaba.druid.pool.DruidDataSource
   freemarker:
     allow-request-override: false
     cache: true
@@ -68,16 +68,23 @@ spring:
     expose-request-attributes: false
     expose-session-attributes: false
     expose-spring-macro-helpers: false
-rocketmq:
-  producer:
-    groupName: sell
-    namesrvAddr: 192.168.31.129:9876
-    sendMsgTimeout: 3000
-    maxMessageSize: 40960
-  consumer:
-    groupName: sell
-    namesrvAddr: 192.168.31.129:9876
-    topic: demoTopic
-    tag: demoTag
-    consumeThreadMax: 10
-    consumeThreadMin: 2
+  metrics:
+    servo:
+      enabled: false
+#rocketmq:
+#  producer:
+#    groupName: sell
+#    namesrvAddr: 192.168.31.129:9876
+#    sendMsgTimeout: 3000
+#    maxMessageSize: 40960
+#  consumer:
+#    groupName: sell
+#    namesrvAddr: 192.168.31.129:9876
+#    topic: demoTopic
+#    tag: demoTag
+#    consumeThreadMax: 10
+#    consumeThreadMin:
+
+management:
+  security:
+    enabled: false
