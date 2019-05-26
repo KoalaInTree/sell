@@ -1,3 +1,4 @@
+/*
 package com.djcao.sell;
 
 import java.io.IOException;
@@ -20,11 +21,13 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 
+*/
 /**
  * @author djcao
  * @workcode wb-cdj390654
  * @date 2018-08-05
- */
+ *//*
+
 @Configuration
 @MapperScan(basePackages = "com.djcao.sell.db.mall.mapper.**",
     sqlSessionFactoryRef = "mallSqlSessionFactory",
@@ -59,3 +62,4 @@ public class MallDataSourceConfig {
         return new DataSourceTransactionManager(dataSource);
     }
 }
+*/

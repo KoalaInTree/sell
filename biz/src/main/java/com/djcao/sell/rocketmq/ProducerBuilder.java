@@ -1,9 +1,11 @@
 package com.djcao.sell.rocketmq;
 
-import com.alibaba.rocketmq.client.exception.MQClientException;
-import com.alibaba.rocketmq.client.producer.DefaultMQProducer;
 
 import lombok.Data;
+import org.apache.rocketmq.client.exception.MQBrokerException;
+import org.apache.rocketmq.client.exception.MQClientException;
+import org.apache.rocketmq.client.producer.DefaultMQProducer;
+import org.apache.rocketmq.remoting.exception.RemotingException;
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;

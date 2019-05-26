@@ -8,7 +8,9 @@ import com.djcao.sell.service.WebSocketService;
 import com.djcao.sell.vo.WordsOfWelcomeVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -32,7 +34,7 @@ public class SayHiController {
         WordsOfWelcomeVO vo = new WordsOfWelcomeVO();
         vo.setCode(1);
         vo.setWords("hi,i'm test");
-        throw new NullPointerException("test");
+        return vo;
     }
 
     @GetMapping("throw")
@@ -50,5 +52,17 @@ public class SayHiController {
     public ModelAndView gotoWebsocket(ModelAndView modelAndView){
         modelAndView.setViewName("websocket");
         return modelAndView;
+    }
+
+    @RequestMapping("test")
+    public WordsOfWelcomeVO test(@RequestBody WordsOfWelcomeVO wordsOfWelcomeVO){
+        return wordsOfWelcomeVO;
+    }
+
+    @RequestMapping("get/price")
+    public @ResponseBody WordsOfWelcomeVO getPrice(){
+        WordsOfWelcomeVO wordsOfWelcomeVO = new WordsOfWelcomeVO();
+        wordsOfWelcomeVO.setPrice(123.12);
+        return wordsOfWelcomeVO;
     }
 }

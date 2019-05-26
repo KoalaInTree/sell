@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.djcao.sell.db.flybird.mapper.MovieMapper" >
+  <resultMap id="BaseResultMap" type="com.djcao.sell.db.flybird.domain.Movie" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="actors" property="actors" jdbcType="VARCHAR" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="poster" property="poster" jdbcType="VARCHAR" />
+    <result column="release_time" property="releaseTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from movie
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.djcao.sell.db.flybird.domain.Movie" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="BEFORE" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into movie (id, name, actors, 
+      title, poster, release_time
+      )
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{actors,jdbcType=VARCHAR}, 
+      #{title,jdbcType=VARCHAR}, #{poster,jdbcType=VARCHAR}, #{releaseTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.djcao.sell.db.flybird.domain.Movie" >
+    update movie
+    set name = #{name,jdbcType=VARCHAR},
+      actors = #{actors,jdbcType=VARCHAR},
+      title = #{title,jdbcType=VARCHAR},
+      poster = #{poster,jdbcType=VARCHAR},
+      release_time = #{releaseTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select id, name, actors, title, poster, release_time
+    from movie
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select id, name, actors, title, poster, release_time
+    from movie
+  </select>
+</mapper>

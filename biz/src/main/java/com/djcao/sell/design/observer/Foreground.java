@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
+ * 观察者模式-Spring应用:事件触发机制
+ *      实现ApplicationListener接口，处理自己的ApplicationEvent类
  * @author djcao
  * @workcode wb-cdj390654
  * @date 2018/9/10

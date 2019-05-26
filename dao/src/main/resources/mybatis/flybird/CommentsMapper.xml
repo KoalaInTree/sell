@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.djcao.sell.db.flybird.mapper.CommentsMapper" >
+  <resultMap id="BaseResultMap" type="com.djcao.sell.db.flybird.domain.Comments" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="age" property="age" jdbcType="INTEGER" />
+    <result column="nick" property="nick" jdbcType="VARCHAR" />
+    <result column="comments" property="comments" jdbcType="VARCHAR" />
+    <result column="reference_id" property="referenceId" jdbcType="INTEGER" />
+    <result column="pic" property="pic" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from comments
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.djcao.sell.db.flybird.domain.Comments" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="BEFORE" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into comments (id, name, age, 
+      nick, comments, reference_id, 
+      pic)
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{age,jdbcType=INTEGER}, 
+      #{nick,jdbcType=VARCHAR}, #{comments,jdbcType=VARCHAR}, #{referenceId,jdbcType=INTEGER}, 
+      #{pic,jdbcType=LONGVARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.djcao.sell.db.flybird.domain.Comments" >
+    update comments
+    set name = #{name,jdbcType=VARCHAR},
+      age = #{age,jdbcType=INTEGER},
+      nick = #{nick,jdbcType=VARCHAR},
+      comments = #{comments,jdbcType=VARCHAR},
+      reference_id = #{referenceId,jdbcType=INTEGER},
+      pic = #{pic,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select id, name, age, nick, comments, reference_id, pic
+    from comments
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select id, name, age, nick, comments, reference_id, pic
+    from comments
+  </select>
+</mapper>
